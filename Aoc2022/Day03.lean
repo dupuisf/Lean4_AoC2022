@@ -109,18 +109,15 @@ Find the item type that corresponds to the badges of each three-Elf group. What 
 def max₃ [Max β] (x y z : β) : β := max x $ max y z
 
 /-- Not doing this again! -/
-partial def find_common₃ [Max α] (s₁ s₂ s₃ : Array α) (p₁ p₂ p₃ : Nat) : α :=
+partial def find_common₃ [Max α] (s₁ s₂ s₃ : Array α) (p₁ p₂ p₃ : Nat) : α := Id.run do
   let x₁ := s₁[p₁]!
   let x₂ := s₂[p₂]!
   let x₃ := s₃[p₃]!
-  if x₁ = x₂ ∧ x₁ = x₃ then x₁
-  else
-    let m := max₃ x₁ x₂ x₃
-    if x₁ = m then (if p₁ = 0 then default else find_common₃ s₁ s₂ s₃ (p₁ - 1) p₂ p₃)
-    else 
-      if x₂ = m then (if p₂ = 0 then default else find_common₃ s₁ s₂ s₃ p₁ (p₂ - 1) p₃)
-      else (if x₃ = m then if p₃ = 0 then default else find_common₃ s₁ s₂ s₃ p₁ p₂ (p₃ - 1)
-      else default)
+  if x₁ = x₂ ∧ x₁ = x₃ then return x₁
+  let m := max₃ x₁ x₂ x₃
+  if x₁ = m then return (if p₁ = 0 then default else find_common₃ s₁ s₂ s₃ (p₁ - 1) p₂ p₃)
+  if x₂ = m then return (if p₂ = 0 then default else find_common₃ s₁ s₂ s₃ p₁ (p₂ - 1) p₃)
+  else return (if p₃ = 0 then default else find_common₃ s₁ s₂ s₃ p₁ p₂ (p₃ - 1))
 
 def second_part : IO Nat := do
   let rawdata ← IO.FS.lines input
