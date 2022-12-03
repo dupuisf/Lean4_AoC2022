@@ -1,5 +1,3 @@
-import Std
-
 open System
 
 namespace Day2

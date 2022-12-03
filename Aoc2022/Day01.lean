@@ -1,6 +1,3 @@
-import Std
-import Aoc2022.Utils
-
 open System
 
 namespace Day1
