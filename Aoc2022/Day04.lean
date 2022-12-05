@@ -54,13 +54,13 @@ In how many assignment pairs does one range fully contain the other?
 -/
 
 def entryline : Parsec (Nat × Nat × Nat × Nat) := do
-  let l₁ ← natnum
+  let l₁ ← natNum
   skipChar '-'
-  let r₁ ← natnum
+  let r₁ ← natNum
   skipChar ','
-  let l₂ ← natnum
+  let l₂ ← natNum
   skipChar '-'
-  let r₂ ← natnum
+  let r₂ ← natNum
   return (l₁, r₁, l₂, r₂)
 
 def fully_contains (l₁ r₁ l₂ r₂ : Nat) : Nat := Id.run do

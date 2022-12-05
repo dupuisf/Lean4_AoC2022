@@ -13,13 +13,13 @@ PART 1:
 -/
 
 def move : Parsec (Nat × Nat × Nat) := do 
-  let _ ← pstring "move "
-  let x ← natnum
-  let _ ← pstring " from "
-  let y ← natnum
-  let _ ← pstring " to "
-  let z ← natnum
-  return (x, y ,z)
+  skipString "move "
+  let x ← natNum
+  skipString " from "
+  let y ← natNum
+  skipString " to "
+  let z ← natNum
+  return (x, y-1, z-1)
 
 def move! (s : String) : Nat × Nat × Nat :=
   match move s.iter with
@@ -43,9 +43,7 @@ def first_part : IO String := do
     (stop := 0)
   let final_stacks := Array.foldl
     (fun stacks line => 
-      let (num, fr', to') := move! line
-      let fr := fr' - 1
-      let to := to' - 1
+      let (num, fr, to) := move! line
       let moved := stacks[fr]!.take num
       (stacks.set! fr (stacks[fr]!.drop num)).set! to (moved.reverse ++ stacks[to]!))
     init_stacks
@@ -70,9 +68,7 @@ def second_part : IO String := do
     (stop := 0)
   let final_stacks := Array.foldl
     (fun stacks line => 
-      let (num, fr', to') := move! line
-      let fr := fr' - 1
-      let to := to' - 1
+      let (num, fr, to) := move! line
       let moved := stacks[fr]!.take num
       (stacks.set! fr (stacks[fr]!.drop num)).set! to (moved ++ stacks[to]!))
     init_stacks

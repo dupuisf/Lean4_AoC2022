@@ -34,10 +34,8 @@ end String
 
 namespace Lean.Parsec
 
-def natnum : Parsec Nat := do
-  let n := (← manyChars digit).toNat?
-  match n with
-  | some x  => return x
-  | none    => fail "Input line has wrong format"
+def natNum : Parsec Nat := do
+  let some n := (← manyChars digit).toNat? | fail "Not a natural number"
+  return n
 
 end Lean.Parsec
