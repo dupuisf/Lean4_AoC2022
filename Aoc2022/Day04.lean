@@ -53,12 +53,6 @@ Some of the pairs have noticed that one of their assignments fully contains the 
 In how many assignment pairs does one range fully contain the other?
 -/
 
-def natnum : Parsec Nat := do
-  let n := (← manyChars digit).toNat?
-  match n with
-  | some x  => return x
-  | none    => fail "Input line has wrong format"
-
 def entryline : Parsec (Nat × Nat × Nat × Nat) := do
   let l₁ ← natnum
   skipChar '-'
