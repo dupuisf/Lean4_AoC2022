@@ -5,7 +5,7 @@ namespace Array
 def max [Inhabited α] [Max α] (a : Array α) : α :=
   if a.size = 0 then default else Array.foldl Max.max a[0]! a
 
-def findIdx! {α : Type _} (as : Array α) (p : α → Bool) : Nat := 
+def findIdx! (as : Array α) (p : α → Bool) : Nat := 
   match as.findIdx? p with
   | some x => x
   | none => panic!"Element not found"
