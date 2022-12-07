@@ -38,4 +38,10 @@ def natNum : Parsec Nat := do
   let some n := (← manyChars digit).toNat? | fail "Not a natural number"
   return n
 
+def newlineChar : Parsec Unit := attempt do
+  let c ← anyChar
+  if c == '\u000a' || c == '\u000a' then return () else fail s!"Newline not found"
+
+def eol : Parsec Unit := eof <|> (many1 newlineChar *> pure ())
+
 end Lean.Parsec
