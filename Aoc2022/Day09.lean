@@ -72,8 +72,6 @@ def first_part : IO Nat := do
                 tailPos := moveTail headPos tailPos
   return poucet.size
 
-#eval first_part
-
 def maxPos : IO String := do
   let commands := (← IO.FS.lines input).map String.splitOn
                                      |>.map (fun s => match s with
