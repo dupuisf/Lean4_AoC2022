@@ -47,8 +47,7 @@ PART 2:
 -/
 
 def second_part : IO Nat := do
-  let grid := (← IO.FS.lines input).map (·.data.toArray)
-                                  |>.map (fun row => row.map (·.toNat - '0'.toNat + 1))
+  let grid := (← IO.FS.lines input).map (·.data.toArray.map (·.toNat - '0'.toNat + 1))
   let dim := grid.size
   let mut output := Array.mkArray₂ dim dim 0
   for i in [0:dim] do
@@ -70,6 +69,6 @@ def second_part : IO Nat := do
         fromBot := fromBot + 1
         if grid[i]![k]! ≥ grid[i]![j]! then break
       output := output.modify₂ i j (fun _ => fromLeft * fromRight * fromTop * fromBot)
-  return output.foldtl (fun x y => max x y) 0
+  return output.foldtl max 0
 
 end Day8

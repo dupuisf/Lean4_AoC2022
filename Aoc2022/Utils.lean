@@ -38,7 +38,7 @@ def zipWith2D (a : Array (Array α)) (b : Array (Array β)) (f : α → β → �
   a.zipWith b (fun ra rb => ra.zipWith rb f)
 
 def modify₂ (a : Array (Array α)) (i j : Nat) (f : α → α) : Array (Array α) :=
-  a.modify i (fun row => row.modify j f)
+  a.modify i (·.modify j f)
 
 end Array
 
