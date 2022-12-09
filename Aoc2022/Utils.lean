@@ -17,10 +17,28 @@ def filterWithIdx (as : Array α) (p : Nat → α → Bool) : Array α :=
     else
       (idx+1, r)
 
-def mkArrayWithNCopies (n : Nat) (x : α) : Array α :=
-  match n with
-  | 0 => #[]
-  | m+1 => (mkArrayWithNCopies m x).push x
+def mkArray₂ (m n : Nat) (v : α) : Array (Array α) :=
+  Array.mkArray m (Array.mkArray n v) 
+
+def foldtlM [Monad m] (f : β → α → m β) (init : β) (a : Array (Array α)) : m β :=
+  a.foldlM (fun x row => row.foldlM f x) init
+
+def foldtl (f : β → α → β) (init : β) (a : Array (Array α)) : β :=
+  a.foldl (fun x row => row.foldl f x) init
+
+def transpose [Inhabited α] (a : Array (Array α)) : Array (Array α) := Id.run do
+  let dim := a.size
+  let mut output : Array (Array α) := #[]
+  for i in [0:dim] do
+    let curCol := a.map (fun row => row[i]!)
+    output := output.push curCol
+  return output
+
+def zipWith2D (a : Array (Array α)) (b : Array (Array β)) (f : α → β → γ) : Array (Array γ) :=
+  a.zipWith b (fun ra rb => ra.zipWith rb f)
+
+def modify₂ (a : Array (Array α)) (i j : Nat) (f : α → α) : Array (Array α) :=
+  a.modify i (fun row => row.modify j f)
 
 end Array
 

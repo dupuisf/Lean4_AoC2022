@@ -37,7 +37,7 @@ def first_part : IO String := do
   let numstacks := (rawdata[sep-1]!.length + 1)/4
   let init_stacks := Array.foldr 
     (fun acc line => parse_stack_line acc line)
-    (Array.mkArrayWithNCopies numstacks [])
+    (Array.mkArray numstacks [])
     rawdata
     (start := sep-1)
     (stop := 0)
@@ -62,7 +62,7 @@ def second_part : IO String := do
   let numstacks := (rawdata[sep-1]!.length + 1)/4
   let init_stacks := Array.foldr 
     (fun acc line => parse_stack_line acc line)
-    (Array.mkArrayWithNCopies numstacks [])
+    (Array.mkArray numstacks [])
     rawdata
     (start := sep-1)
     (stop := 0)

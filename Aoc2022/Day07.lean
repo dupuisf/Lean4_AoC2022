@@ -14,11 +14,9 @@ inductive DirElem where
 | File (name : String) (size : Nat)
 | Directory (name : String) (parent : Option DirElem) (content : Array DirElem)
 | DirStub (name : String) (parent : Option DirElem)
-deriving BEq, Repr
+deriving BEq, Repr, Inhabited
 
 namespace DirElem
-
-instance : Inhabited DirElem := ⟨DirElem.File "" 0⟩
 
 def getParent : DirElem → Option DirElem
 | File _ _ => none
