@@ -49,7 +49,7 @@ def first_part : IO Nat := do
                                                       | [c, num] => (c, num.toNat!)
                                                       | _ => unreachable!)
                                      |>.push ("R", 1)
-  let mut poucet : List (Pos) := []
+  let mut poucet : List Pos := []
   let mut headPos : Pos := ⟨0, 0⟩
   let mut tailPos : Pos := ⟨0, 0⟩
   for cmd in commands do
@@ -92,8 +92,7 @@ PART 2:
 -/
 
 def moveLink (old : Pos) : StateM Pos Pos := do
-  let fakeHead ← get
-  let fakeTail := moveTail fakeHead old
+  let fakeTail := moveTail (← get) old
   set fakeTail
   return fakeTail
 
@@ -106,8 +105,8 @@ def second_part : IO Nat := do
                                                       | [c, num] => (c, num.toNat!)
                                                       | _ => unreachable!)
                                      |>.push ("R", 1)
-  let mut poucet : List (Pos) := []
-  let mut rope : Array (Pos) := Array.mkArray 10 ⟨0, 0⟩
+  let mut poucet : List Pos := []
+  let mut rope : Array Pos := Array.mkArray 10 ⟨0, 0⟩
   for cmd in commands do
     let (dir, dist) := cmd
     for _ in [0:dist] do
