@@ -40,6 +40,10 @@ def zipWith2D (a : Array (Array α)) (b : Array (Array β)) (f : α → β → �
 def modify₂ (a : Array (Array α)) (i j : Nat) (f : α → α) : Array (Array α) :=
   a.modify i (·.modify j f)
 
+def sum [Add α] (a : Array α) : Option α := a.foldl (fun s elem => match s with
+                                                                   | none => some elem
+                                                                   | some x => some (x + elem)) none 
+
 end Array
 
 namespace String
