@@ -17,8 +17,8 @@ deriving Inhabited
 def Monkey.catchItem (m : Monkey α) (i : α) : Monkey α :=
   { m with items := m.items.push i }
 
-def Monkey.throwItem [BEq α] (m : Monkey α) (i : α) : Monkey α :=
-  { m with items := m.items.erase i }
+def Monkey.flushItems [BEq α] (m : Monkey α) : Monkey α :=
+  { m with items := #[] }
 
 /-
 PART 1:
@@ -51,17 +51,16 @@ def first_part : IO Nat := do
         let i' := (monkeys[m]!.op i) / 3
         if i' % monkeys[m]!.test == 0 then
           monkeys := monkeys.modify monkeys[m]!.ifTrue (fun _ => monkeys[monkeys[m]!.ifTrue]!.catchItem i')
-          monkeys := monkeys.modify m (fun _ => monkeys[m]!.throwItem i)
         else
           monkeys := monkeys.modify monkeys[m]!.ifFalse (fun _ => monkeys[monkeys[m]!.ifFalse]!.catchItem i')
-          monkeys := monkeys.modify m (fun _ => monkeys[m]!.throwItem i)
+      monkeys := monkeys.modify m (fun _ => monkeys[m]!.flushItems)
   let sorted := monkeyActivity.qsort (· > ·)
   return sorted[0]! * sorted[1]!
 
 
 /-
 PART 2:
-Doesn't work due to stack overflow (!) at around 7500 rounds
+Doesn't work due to stack overflow (!) at around 9200 rounds
 -/
 
 def second_part (numRounds : Nat) : IO Nat := do
@@ -93,10 +92,9 @@ def second_part (numRounds : Nat) : IO Nat := do
         let i' := (monkeys[m]!.op i) % modulo
         if i' % monkeys[m]!.test == 0 then
           monkeys := monkeys.modify monkeys[m]!.ifTrue (fun _ => monkeys[monkeys[m]!.ifTrue]!.catchItem i')
-          monkeys := monkeys.modify m (fun _ => monkeys[m]!.throwItem i)
         else
           monkeys := monkeys.modify monkeys[m]!.ifFalse (fun _ => monkeys[monkeys[m]!.ifFalse]!.catchItem i')
-          monkeys := monkeys.modify m (fun _ => monkeys[m]!.throwItem i)
+      monkeys := monkeys.modify m (fun _ => monkeys[m]!.flushItems)
   dbg_trace s!"{monkeyActivity}" 
   let sorted := monkeyActivity.qsort (· > ·)
   return sorted[0]! * sorted[1]!
