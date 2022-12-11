@@ -13,4 +13,9 @@ lean_exe aoc2022 {
   root := `Main
 }
 
+@[default_target]
+lean_exe mwe {
+  root := `Aoc2022.Scratchpad
+}
+
 require std from git "https://github.com/leanprover/std4" @ "main"
