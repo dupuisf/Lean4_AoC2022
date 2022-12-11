@@ -1,7 +1,6 @@
 import Aoc2022.Utils
-import Std.Data.Array.Basic
 
-open System Lean.Parsec
+open System
 
 namespace Day11
 
