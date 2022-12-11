@@ -59,5 +59,5 @@ def second_part : IO Unit := do
                 printPixel curCycle X
                 curCycle := curCycle + 1
                 X := X + n
-  
+
 end Day10
