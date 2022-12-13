@@ -52,6 +52,11 @@ def toCharArray (s : String) : Array Char := s.data.toArray
 
 def ofCharArray (a : Array Char) : String := { data := a.toList }
 
+def yoloParse [Inhabited α] (s : String) (p : Lean.Parsec α) : α := 
+  match p s.iter with
+  | Lean.Parsec.ParseResult.success _ x => x 
+  | Lean.Parsec.ParseResult.error _ _ => panic! "YOLO!"
+
 end String
 
 namespace Lean.Parsec
@@ -65,5 +70,14 @@ def newlineChar : Parsec Unit := attempt do
   if c == '\u000a' || c == '\u000a' then return () else fail s!"Newline not found"
 
 def eol : Parsec Unit := eof <|> (many1 newlineChar *> pure ())
+
+partial def sepByCore (pcont : Parsec α) (psep : Parsec β) (acc : List α) : 
+  Parsec (List α) :=
+(do let _ ← psep; sepByCore pcont psep (acc ++ [←pcont])) <|> pure acc
+
+def sepBy (pcont : Parsec α) (psep : Parsec β) : Parsec (List α) :=
+(do Parsec.sepByCore pcont psep [←pcont]) <|> pure []
+
+def csv [Inhabited α] (p : Parsec α) : Parsec (List α) := sepBy p (do skipString ","; ws)
 
 end Lean.Parsec
